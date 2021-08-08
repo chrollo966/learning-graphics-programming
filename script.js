@@ -2,15 +2,11 @@
     // declare variables globally.
     let canvas = null;
     let ctx = null;
-    let image = null;
 
     // detect when the HTML file has completely loaded.
     window.addEventListener('load', () => {
-        imageLoader('./images/lotus.jpeg', (loadedImage) => {
-            image = loadedImage;
-            initialize();
-            render();
-        });
+        initialize();
+        render();
     }, false);
 
     function initialize() {
@@ -26,9 +22,10 @@
     }
 
     function render() {
-        ctx.drawImage(image, 100, 100);
-        ctx.drawImage(image, 300, 100, 200, 200);
-        ctx.drawImage(image, 16, 16, 96, 96, 100, 300, 50, 50);
+        ctx.font = 'bold 30px cursive';
+        ctx.textBaseline = 'alphabetic';
+        ctx.textAlign = 'start';
+        drawText('Graphics Programming', 100, 100, '#ff00aa', 150);
     }
 
     // drawing functions
@@ -246,6 +243,20 @@
         target.src = path;
     }
 
+    /**
+     * drawing text
+     * @param {string} text - text to draw
+     * @param {number} x - x coordinate
+     * @param {number} y - y coordinate
+     * @param {string} [color] - text color
+     * @param {number} [width] - upper bound text width
+     */
+    function drawText(text, x, y, color, width) {
+        if (color != null) {
+            ctx.fillStyle = color;
+        }
+        ctx.fillText(text, x, y, width);
+    }
 
 })();
 

@@ -2,16 +2,21 @@
     // declare variables globally.
     let canvas = null;
     let ctx = null;
+    let image = null;
+
     // detect when the HTML file has completely loaded.
     window.addEventListener('load', () => {
-        initialize();
-        render();
+        imageLoader('./images/lotus.jpeg', (loadedImage) => {
+            image = loadedImage;
+            initialize();
+            render();
+        });
     }, false);
 
     function initialize() {
         // Create Canvas element
         canvas = document.body.querySelector('#canvas'); // get canvas element from DOM
-        
+
         // setting canvas size to cover thw entire window
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -21,11 +26,9 @@
     }
 
     function render() {
-        const POINT_COUNT = 1000;
-
-        for (let i = 0; i < POINT_COUNT; ++i) {
-            drawCircle(generateRandomInt(300), generateRandomInt(300), 3, "black");;
-        }
+        ctx.drawImage(image, 100, 100);
+        ctx.drawImage(image, 300, 100, 200, 200);
+        ctx.drawImage(image, 16, 16, 96, 96, 100, 300, 50, 50);
     }
 
     // drawing functions
@@ -37,7 +40,7 @@
      * @param {number} height — height of the rectangle
      * @param {string} [color] –  color filling the rectangle
      */
-    function drawRect (x, y, width, height, color) {
+    function drawRect(x, y, width, height, color) {
         // set the style if color is specified        
         if (color != null) {
             ctx.fillStyle = color;
@@ -54,7 +57,7 @@
      * @param {string} color — line color
      * @param {number} [width=1] — line width 
      */
-    function drawLine (x1, y1, x2, y2, color, width = 1) {
+    function drawLine(x1, y1, x2, y2, color, width = 1) {
         // set the style if color is specified
         if (color != null) {
             ctx.strokeStyle = color;
@@ -83,7 +86,7 @@
      * @param {Array<number>} points — polygon vertices coordinates
      * @param {string} color — color
      */
-    function drawPolygon (points, color) {
+    function drawPolygon(points, color) {
         // check if points are in an array and enough to draw polygon
         if (Array.isArray(points) !== true || points.length < 6) {
             return;
@@ -111,7 +114,7 @@
         // fill the polygon
         ctx.fill();
     }
-    
+
     /**
      * 
      * @param {number} x -- x coordinate of the center
@@ -119,7 +122,7 @@
      * @param {number} radius -- radius of the circle
      * @param {string} [color] -- color of the circle
      */
-    function drawCircle (x, y, radius, color) {
+    function drawCircle(x, y, radius, color) {
         if (color != null) {
             ctx.fillStyle = color;
         }
@@ -144,12 +147,12 @@
      * @param {number} endRadian -- ending radian
      * @param {string} [color] -- color of the fan
      */
-    function drawFan (x, y, radius, startRadian, endRadian, color) {
+    function drawFan(x, y, radius, startRadian, endRadian, color) {
         if (color != null) {
             ctx.fillStyle = color
         }
         ctx.beginPath();
-        ctx.moveTo(x,y);
+        ctx.moveTo(x, y);
         ctx.arc(x, y, radius, startRadian, endRadian);
         ctx.closePath();
         ctx.fill();
@@ -197,7 +200,7 @@
      * @param {string} [color] -- drawing color
      * @param {number} [width=1] -- line width
      */
-    function drawCubicBezier (x1, y1, x2, y2, cx1, cy1, cx2, cy2, color, width = 1) {
+    function drawCubicBezier(x1, y1, x2, y2, cx1, cy1, cx2, cy2, color, width = 1) {
         // set the style if color is specified
         if (color != null) {
             ctx.strokeStyle = color;
@@ -224,6 +227,25 @@
         let random = Math.random();
         return Math.floor(random * range);
     }
+
+    /**
+     * loading image and call back a function
+     * @param {string} path - path to image file
+     * @param {function} [callback] - callback function
+     */
+    function imageLoader(path, callback) {
+        // generate image instance
+        let target = new Image();
+
+        // process when the image has been loaded
+        target.addEventListener('load', () => {
+            if (callback != null) {
+                callback(target);
+            }
+        }, false);
+        target.src = path;
+    }
+
 
 })();
 

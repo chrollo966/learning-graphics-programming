@@ -2,15 +2,11 @@
     // declare variables globally.
     let canvas = null;
     let ctx = null;
-    let image = null;
 
     // detect when the HTML file has completely loaded.
     window.addEventListener('load', () => {
-        imageLoader('./images/color.jpeg', (loadedImage) => {
-            image = loadedImage;
-            initialize();
-            render();
-        });
+        initialize();
+        render();
     }, false);
 
     function initialize() {
@@ -26,8 +22,12 @@
     }
 
     function render() {
-        let imagePattern = ctx.createPattern(image, 'repeat');
-        drawRect(0, 0, 500, 500, imagePattern);
+        ctx.globalAlpha = 0.5;
+        drawLine(50, 100, 500, 300, '#0000ff', 5);
+        ctx.font = 'bold 30px cursive';
+        drawText('graphics programming', 100, 150, '#ff0000');
+        drawRect(50, 50, 200, 100, '#ff9900');
+        drawCircle(350, 200, 100, '#00ff00');
     }
 
     // drawing functions

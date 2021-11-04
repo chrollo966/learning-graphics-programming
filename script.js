@@ -2,11 +2,15 @@
     // declare variables globally.
     let canvas = null;
     let ctx = null;
+    let image = null;
 
     // detect when the HTML file has completely loaded.
     window.addEventListener('load', () => {
-        initialize();
-        render();
+        imageLoader('./images/color.jpeg', (loadedImage) => {
+            image = loadedImage;
+            initialize();
+            render();
+        });
     }, false);
 
     function initialize() {
@@ -22,23 +26,8 @@
     }
 
     function render() {
-        let linearGradient = ctx.createLinearGradient(0, 0, 0, 200); // create linear gradient from (0, 0) to (0, 200)
-        linearGradient.addColorStop(0.0, '#ff0000'); // red at 0 %
-        linearGradient.addColorStop(0.5, '#ffff00'); // yellow at 50 %
-        linearGradient.addColorStop(1.0, '#0000ff'); // blue at 100 %
-
-        drawRect(0, 0, 100, 100, linearGradient);
-        drawRect(100, 100, 100, 100, linearGradient);
-        drawRect(200, 200, 200, 200, linearGradient);
-
-        let radialGradient = ctx.createRadialGradient(250, 0, 50, 250, 0, 300);
-        radialGradient.addColorStop(0.0, '#006600');
-        radialGradient.addColorStop(0.5, '#ffff00');
-        radialGradient.addColorStop(1.0, '#ff00ff');
-        
-        drawRect(250, 0, 100, 100, radialGradient);
-        drawRect(350, 100, 100, 100, radialGradient);
-
+        let imagePattern = ctx.createPattern(image, 'repeat');
+        drawRect(0, 0, 500, 500, imagePattern);
     }
 
     // drawing functions
